@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Setup Python Environment') {
             steps {
-                sh """
+                bat """
                     python3 -m venv .venv
                     source .venv/bin/activate
                     pip install --upgrade pip
@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh """
+                bat """
                     source .venv/bin/activate
                     pytest --junitxml=report.xml --html=report.html --self-contained-html
                 """
