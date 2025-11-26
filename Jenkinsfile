@@ -35,7 +35,6 @@ pipeline {
                 always {
                      archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
         }
-
+}
         }
-    }
 }
