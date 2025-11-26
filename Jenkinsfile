@@ -18,7 +18,7 @@ pipeline {
             steps {
                 bat """
                     call venv\\Scripts\\activate
-                    python -m pytest --junitxml=report.xml --html=report.html --self-contained-html
+                    python -m pytest .
                 """
             }
         }
