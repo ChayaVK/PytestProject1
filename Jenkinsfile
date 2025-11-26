@@ -13,6 +13,14 @@ pipeline {
                 """
             }
         }
+        stage('Install Allure') {
+            steps {
+                powershell """
+                    choco install allure -y
+                    refreshenv
+                    allure --version
+                """
+            }
 
         stage('Run Tests') {
             steps {
