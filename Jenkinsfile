@@ -6,10 +6,10 @@ pipeline {
         stage('Setup Python Environment') {
             steps {
                 bat """
-                    python3 -m venv .venv
-                    source .venv/bin/activate
-                    py -m pip install --upgrade pip
-                    py -m pip install -r requirements.txt
+                     python -m venv venv
+                    call venv\\Scripts\\activate
+                    python -m pip install --upgrade pip
+                    python -m pip install -r requirements.txt
                 """
             }
         }
@@ -17,8 +17,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 bat """
-                    source .venv/bin/activate
-                    pytest --junitxml=report.xml --html=report.html --self-contained-html
+                    call venv\\Scripts\\activate
+                    python -m pytest --junitxml=report.xml --html=report.html --self-contained-html
                 """
             }
         }
