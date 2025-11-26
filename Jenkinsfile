@@ -28,14 +28,17 @@ pipeline {
                 """
             }
         }
-
-        
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
-            junit 'allure-results/*'  // Optional: if you want Jenkins test results view
+          stage('Generate Allure Report') {
+            steps {
+                allure([
+                    results: [[path: 'allure-results']],
+                    reportBuildPolicy: 'ALWAYS'
+                ])
+            }
         }
+
+
     }
+
+
 }
