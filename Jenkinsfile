@@ -20,9 +20,16 @@ pipeline {
                 bat """
                     call venv\\Scripts\\activate
                     python -m pytest --alluredir=allure-results
+
+                """
+            }
+        stage('Generate Allure Report') {
+            steps {
+                bat """
                     allure generate allure-results -o allure-report --clean
                 """
             }
+        }
             post {
                 always {
                      archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
