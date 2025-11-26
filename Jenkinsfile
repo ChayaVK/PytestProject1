@@ -23,6 +23,7 @@ pipeline {
 
                 """
             }
+            }
         stage('Generate Allure Report') {
             steps {
                 bat """
@@ -34,7 +35,7 @@ pipeline {
                 always {
                      archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
         }
-    }
+
         }
     }
 }
