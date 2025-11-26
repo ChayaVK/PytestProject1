@@ -10,22 +10,15 @@ pipeline {
                     call venv\\Scripts\\activate
                     python -m pip install --upgrade pip
                     python -m pip install -r requirements.txt
+                    python -m pip install allure-pytest
                 """
             }
         }
-        stage('Install Allure') {
-            steps {
-                powershell """
-                    choco install allure -y
-                    refreshenv
-                    allure --version
-                """
-            }
-}
+
         stage('Run Tests') {
             steps {
                 bat """
-                    python -m pip install allure-pytest
+
                     python -m pytest --alluredir=allure-results
                     allure generate allure-results -o allure-report --clean
                 """
