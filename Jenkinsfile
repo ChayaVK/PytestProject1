@@ -1,29 +1,33 @@
 pipeline {
     agent any
-    options { timestamps() }
+
+    environment {
+        VENV_DIR = 'venv'
+    }
 
     stages {
         stage('Setup Python Environment') {
             steps {
                 bat """
-                    python -m venv venv
-                    call venv\\Scripts\\activate
+                    python -m venv %VENV_DIR%
+                    call %VENV_DIR%\\Scripts\\activate
                     python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
-                    python -m pip install allure-pytest
+                    if exist requirements.txt (
+                        python -m pip install -r requirements.txt
+                    )
                 """
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Pytest with Allure') {
             steps {
                 bat """
-                    call venv\\Scripts\\activate
+                    call %VENV_DIR%\\Scripts\\activate
                     python -m pytest --alluredir=allure-results
-
                 """
             }
-            }
+        }
+
         stage('Generate Allure Report') {
             steps {
                 bat """
@@ -31,10 +35,12 @@ pipeline {
                 """
             }
         }
-            post {
-                always {
-                     archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'allure-report/**', fingerprint: true
+            junit 'allure-results/*'  // Optional: if you want Jenkins test results view
         }
-}
-        }
+    }
 }
