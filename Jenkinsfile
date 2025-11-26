@@ -21,7 +21,7 @@ pipeline {
                     allure --version
                 """
             }
-
+}
         stage('Run Tests') {
             steps {
                 bat """
